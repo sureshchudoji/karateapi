@@ -1,28 +1,29 @@
-@debug
 Feature: Articles
 
 Background: 
     * configure ssl = true
     * url apiURL
 
-    #Read the JSON file from the file & get the JSON object
-    * def articleRequestBody = read('classpath:conduitApp/json/newArticleRequest.json')
+    #Read the JSON file from the below path & get the JSON object
+    * def articleRequestBody = read('classpath:conduitApp/testData/requestBody/newArticleRequest.json')
 
     #Generate random values & assign them to the JSON Object 
     * def dataGenerator = Java.type('helpers.DataGenerator')
+    
     * set articleRequestBody.article.title = dataGenerator.getRandomArticleValues().title
     * set articleRequestBody.article.description = dataGenerator.getRandomArticleValues().description
     * set articleRequestBody.article.body = dataGenerator.getRandomArticleValues().body
    
-
 Scenario: Create New Article
         Given path 'articles'
         And request articleRequestBody
         When method Post
         Then status 200
         And match response.article.title == articleRequestBody.article.title
+        And match response.article.description == articleRequestBody.article.description
+        And match response.article.body == articleRequestBody.article.body
+        
     
-@debug
 Scenario: Create and Delete Article
     Given path 'articles'
     And request articleRequestBody
