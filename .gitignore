@@ -1,0 +1,3 @@
+target/*
+!target/cucumber-html-reports/
+!target/gatling/
